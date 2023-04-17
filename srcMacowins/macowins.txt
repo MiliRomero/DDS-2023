@@ -1,0 +1,78 @@
+clase Tienda{
+	var ventas
+	
+	metodo ganancias(dia){
+		return ventas.filter(venta -> venta.esDeFecha(dia)).sum(venta -> venta.precioFinal())
+	}
+}
+
+clase Venta{
+	var prendasVendidas
+	var fecha = new Date()
+	var tipoPago
+	
+	metodo calcularRecargo(prenda) {return tipoPago.recargo(prenda)}
+	
+	metodo esDeFecha(dia) = dia === fecha
+	
+	metodo precioFinal() = prendasVendidas.sum{prendaVendida => 
+			prendaVendida.importeXCantVendida() + self.calcularRecargo(prendaVendida)} 
+			
+}
+
+objeto efectivo{
+	metodo recargo(prenda){ return 0 }
+}
+
+clase Tarjeta{
+	constante cantCuotas
+	constante coefFijo
+	
+	metodo recargo(prenda){ return cantCuotas * coefFijo + (prenda.importeXCantVendida() * 0.01)}
+}
+
+
+clase Prenda{
+	var precioBase
+	var estado
+	var tipo
+	
+	metodo calcularPrecio(){ return estado.calcularPrecio(self)}
+}
+
+clase PrendaVendida{
+	var prenda
+	var cantVendida
+	
+	metodo importeXCantVendida() { return prenda.calcularPrecio() * cantVendida}
+}
+
+objeto nueva{
+	metodo calcularPrecio(prenda) { return prenda.precioBase()}
+}
+
+clase Promocion{
+	constante valor
+	
+	metodo calcularPrecio(prenda) { return nueva.calcularPrecio(prenda) - valor}
+}
+
+objeto liquidacion{
+	metodo calcularPrecio(prenda){ return nueva.calcularPrecio(prenda) * 0.5}
+}
+
+
+
+NOTAS:
+	- En un principio pensé de modelar los tipos de prendas como clases que heredaban de la clase Prenda ya que cada tipo de prenda
+		iba a nacer y morir siendo del mismo tipo, por ejemplo un pantalon no va a pasar a ser de tipo camisa pero descarté esa solución porque 
+		por los requerimientos que se planteaban no había comportamientos diferentes entre los tipos de prendas que ameritara poner las clases, 
+		así que decidí modelarlas como un atributo tipo string de la clase Prenda.
+		
+	- El estado de la prenda decidí ponerlo como un atributo de la clase Prenda porque es algo que puede variar con el tiempo y puedo necesitar cambiar,
+		en particular al estado Promocion lo modelé como una clase y no como un objeto porque tengo un valor que me da el usuario que puede ser diferente
+		para cada promocion.
+	
+	- Decidí crear una clase para PrendaVendida para poder agrupar la prenda con su cantidad vendida. En un principio pensé en ponerle un atributo más
+		 a la clase Prenda que sea cantidadVendidaXVenta y cada vez que calculaba el precio final de una venta, reiniciaba ese valor a 0, pero lo descarté
+		 porque quedaba demasiado enroscado el código.
