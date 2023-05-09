@@ -1,5 +1,8 @@
 package org.example;
 
+import jdk.jfr.BooleanFlag;
+
+@BooleanFlag
 public enum TipoPrenda {
   ZAPATILLAS(Categoria.CALZADO),
   ZAPATOS(Categoria.CALZADO),
@@ -8,6 +11,7 @@ public enum TipoPrenda {
   CAMISA_MANGA_LARGA(Categoria.PARTE_SUPERIOR),
   REMERA_MANGA_CORTA(Categoria.PARTE_SUPERIOR),
   REMERA_MANGA_LARGA(Categoria.PARTE_SUPERIOR),
+  CHOMBA(Categoria.PARTE_SUPERIOR),
   MUSCULOSA(Categoria.PARTE_SUPERIOR),
   PANTALON(Categoria.PARTE_INFERIOR),
   POLLERA(Categoria.PARTE_INFERIOR),
